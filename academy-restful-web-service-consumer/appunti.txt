@@ -1,0 +1,46 @@
+BACKEND -> WEB-SERVICE-PROVIDER
+
+
+FRONTEND
+1) install bootstrap   npm install bootstrap --save
+2)angular.json aggiungiamo styles  "node_modules/bootstrap/dist/css/bootstrap.min.css"
+3) creazione module/academy ng g m academy
+4)creo component relative al module academy (EDIT, CREATE, INDEX)
+5)settare le routes [app.routes.ts]
+6)model(tante interfaccie per quante entiti JPA nel backend) -> Accademy (interface)  => il service(API OBSERVABLE = mappa il json in Typscript) interpreterà l'iterfaccia creando l'oggetto in Typscript
+7)service(accademy; compiti: fare chiamate REST e LOGICA BUISNESS)
+	per fare le chiamate serve API HTTP-CLIENT[service di defaoult di angular iniettabile tram ite ostruttore in un altro service]
+	(iniettato nel costruttore) - chiamte rest tramite API
+8)Academy SERVICE
+	a) imposta URL impostato dal BACKEND nel controller(@RequestMapping("/rest/api/academies"))
+	b)Richiesta GET (OBSERVABLE = API che rimane in ascolto durante una chiamata ad un servizio REST,
+		è tipizzata(any),
+		è ASINCRONA(callback, + richieste contemporaneamente)
+		in grado di mappare JSON in ogetti Typescript e può trovarsi in  3 stati differenti:
+		NEXT-> la chiamata ad un servizio REST è stata effettuata ma ancora non terminata
+		COMPLITED-> // con successo
+		ERROR-> // Eccezione)
+		GET -->> restituisce un OBSERVABLE
+
+		dobbiamo creare tanti metodi rest quanti ce ne sono nel controller BACKEND
+
+		.pipe funzione typescript che può catchare
+	c)Richiamiamo un custom Exeption per catchare lo stato dell'API
+	d)HTTP-OPTION dichiare il tipo di ritorno (JSON)
+9)creare interfaccia della classe Service (LOOSE COUPLING)
+	a) aggiunta di una costante
+		export const academy_service_token =
+		new InjectionToken<AcademyServiceI>('academy_service_token');
+		<!--se vogliamo che una classe service venga iniettata in una component tramite interfaccia
+		occorre inizializzare sotto forma di injectionj token da matchare all'interno di unba component.-->
+10) index component providers -> provide del token dell'interfaccia service
+		private academyService = inject<AcademyServiceI>(academy_service_token);
+	imports: [CommonModule(da inserire sempre), RouterModule(quando si necessita una ridirezione da una component ad un'altra)]
+
+API OBSERVABLE-> implementa il -> [PATTERN OBSSSERVER]
+									una componente applicativa che notifica eventi(OBSERVABLE).
+									una componente applicativa(component) che si deve sottoscrivere all'observable
+										per ricevere la notifica degli eventi(OBSERVER/SUBJECT). -> tramite SUBSCRIBE (funzione Typescript)
+SUBSCRIBE -> consente di invocare un OBSERVABLE in attesa di restituzione di eventi
+
+11) sul backend aggiungiamo al controller dell'entity @CrossOrigin //che consente di rendere disponibile il web service ad applicazioni esterne
