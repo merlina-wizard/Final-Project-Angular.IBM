@@ -44,3 +44,6 @@ API OBSERVABLE-> implementa il -> [PATTERN OBSSSERVER]
 SUBSCRIBE -> consente di invocare un OBSERVABLE in attesa di restituzione di eventi
 
 11) sul backend aggiungiamo al controller dell'entity @CrossOrigin //che consente di rendere disponibile il web service ad applicazioni esterne
+?) edit redirect dal index
+	a) API ActivatedRoutes -> consente di recuperare il valore di una PathVariable
+		URL-> dovremmo prendere un code inserito al Click sull'edit nell'indexComponent
